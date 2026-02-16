@@ -8,15 +8,6 @@ const imagekit = new ImageKit({
 });
 
 async function createPostController(req, res) {
-  const token = req.cookies.token;
-
-  let user = null;
-  try {
-    user = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (err) {
-    res.status(401).json("Unauthorized Acess");
-  }
-
   const file = await imagekit.files.upload({
     file: await toFile(Buffer.from(req.file.buffer), "file"),
     fileName: "Test",
@@ -26,9 +17,47 @@ async function createPostController(req, res) {
   let post = await postModel.create({
     caption: req.body.caption,
     imageUrl: file.url,
-    user: user.id,
+    user: req.user.id,
   });
   res.send(post);
 }
 
-module.exports = createPostController;
+async function getPostsController(req, res) {
+ 
+
+  let posts = await postModel.find({ user: req.user.id });
+
+  res.status(200).json({
+    message: "Posts fetced Successfully",
+    posts,
+  });
+}
+
+async function getPostDetailsController(req, res) {
+  
+
+  let post = await postModel.findById(req.params.postId);
+
+  if (!post) {
+    return res.status(404).json({
+      message: "Post Not Found",
+    });
+  }
+  let isOwner = post.user.toString() == req.user.id;
+  if (!isOwner) {
+    return res.status(401).json({
+      message: "You cannot access othes post ",
+    });
+  }
+
+  res.status(200).json({
+    message: "Post fetched Successfully",
+    post,
+  });
+}
+
+module.exports = {
+  createPostController,
+  getPostsController,
+  getPostDetailsController,
+};
