@@ -15,7 +15,13 @@ export function UsePost() {
   const handleLikePost = async (postId) => {
     setFeed((prevFeed) =>
       prevFeed.map((post) =>
-        post._id == postId ? { ...post, isLiked: !post.isLiked } : post,
+        post._id == postId
+          ? {
+              ...post,
+              isLiked: !post.isLiked,
+              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+            }
+          : post,
       ),
     );
     try {

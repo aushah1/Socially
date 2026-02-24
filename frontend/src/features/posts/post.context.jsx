@@ -9,7 +9,14 @@ export function PostProvider({ children }) {
 
   return (
     <PostContext.Provider
-      value={{ post, setPost, feed, setFeed, loading, setLoading }}>
+      value={{
+        post,
+        setPost,
+        feed,
+        setFeed,
+        loading,
+        setLoading,
+      }}>
       {children}
     </PostContext.Provider>
   );

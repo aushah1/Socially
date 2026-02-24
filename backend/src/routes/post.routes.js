@@ -32,4 +32,5 @@ postRouter.get(
   identify.identifyUser,
   postController.likeController,
 );
+
 module.exports = postRouter;

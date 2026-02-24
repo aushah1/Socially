@@ -95,7 +95,11 @@ async function getFeedController(req, res) {
         user: user.username,
         post: post._id,
       });
+      const likes = await likeModel.find({
+        post: post._id,
+      });
       post.isLiked = Boolean(isLiked);
+      post.likes = likes.length;
       return post;
     }),
   );

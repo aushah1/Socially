@@ -8,7 +8,6 @@ const Post = ({ post, user, onLike }) => {
   return (
     <>
       <div className="post">
-        {/* Header */}
         <div className="post-header">
           <div className="post-user">
             <img src={user.profileImage} alt="" className="post-profile-img" />
@@ -20,12 +19,10 @@ const Post = ({ post, user, onLike }) => {
           </div>
         </div>
 
-        {/* Post Image */}
         <div className="post-image">
           <img src={post.imageUrl} alt="post" />
         </div>
 
-        {/* Actions */}
         <div className="post-actions">
           <div className="post-actions-left">
             <button
@@ -47,10 +44,8 @@ const Post = ({ post, user, onLike }) => {
           </div>
         </div>
 
-        {/* Likes */}
-        <div className="post-likes">128 likes</div>
+        <div className="post-likes">{post.likes} likes</div>
 
-        {/* Caption */}
         <div className="post-caption">
           <span className="post-username">{user.username}</span>
           <span className="post-caption-text">{post.caption}</span>
