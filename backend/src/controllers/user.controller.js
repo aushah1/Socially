@@ -92,12 +92,35 @@ async function rejectFollowRequest(req, res) {
   res.status(200).json({
     message: `You have rejected the follow request from ${follower}`,
     followRequest,
-  }); 
+  });
+}
+
+async function getMe(req, res) {
+  const userId = req.user.id;
+
+  const user = await userModel.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({
+      message: "User Not Found",
+    });
+  }
+
+  res.status(200).json({
+    message: "User Fetched Successfully",
+    user: {
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+      profileImage: user.profileImage,
+    },
+  });
 }
 
 module.exports = {
   followController,
   unFollowController,
-  acceptFollowRequest,
-  rejectFollowRequest,
+  acceptFollowRequestController,
+  rejectFollowRequestController,
+  getMeController,
 };

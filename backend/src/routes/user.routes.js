@@ -15,8 +15,17 @@ userRouter.get(
   userController.unFollowController,
 );
 
-userRouter.get("/followrequest/accept/:username", identify.identifyUser, userController.acceptFollowRequest);
-userRouter.get("/followrequest/reject/:username", identify.identifyUser, userController.rejectFollowRequest);
+userRouter.get(
+  "/followrequest/accept/:username",
+  identify.identifyUser,
+  userController.acceptFollowRequestController,
+);
+userRouter.get(
+  "/followrequest/reject/:username",
+  identify.identifyUser,
+  userController.rejectFollowRequestController,
+);
 
+userRouter.get("/getme", identify.identifyUser, userController.getMeController);
 
 module.exports = userRouter;

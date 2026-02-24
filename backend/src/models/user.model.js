@@ -11,18 +11,18 @@ const userSchema = new mongoose.Schema({
     unique: [true, "email  already exists"],
     required: [true, "email is required"],
   },
-  password :{
+  password: {
     type: String,
     required: [true, "password is required"],
+    select: false,
   },
   bio: String,
-  profileImage :{
+  profileImage: {
     type: String,
-    default : "https://ik.imagekit.io/4aj3hgui6v/default.jfif"
-  }
+    default: "https://ik.imagekit.io/4aj3hgui6v/default.jfif",
+  },
 });
 
+const userModel = mongoose.model("users", userSchema);
 
-const userModel = mongoose.model("users", userSchema)
-
-module.exports = userModel
+module.exports = userModel;
