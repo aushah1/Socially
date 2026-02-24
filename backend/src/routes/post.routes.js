@@ -15,6 +15,13 @@ postRouter.post(
   postController.createPostController,
 );
 postRouter.get("/", identify.identifyUser, postController.getPostsController);
+
+postRouter.get(
+  "/feed",
+  identify.identifyUser,
+  postController.getFeedController,
+);
+
 postRouter.get(
   "/:postId",
   identify.identifyUser,
@@ -25,11 +32,4 @@ postRouter.get(
   identify.identifyUser,
   postController.likeController,
 );
-
-postRouter.get(
-  "/feed",
-  identify.identifyUser,
-  postController.getFeedController,
-);
-
 module.exports = postRouter;

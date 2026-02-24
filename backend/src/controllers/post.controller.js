@@ -89,7 +89,7 @@ async function getFeedController(req, res) {
     });
   }
 
-  const posts = Promise.all(
+  const posts = await Promise.all(
     (await postModel.find().populate("user").lean()).map(async (post) => {
       const isLiked = await likeModel.findOne({
         user: user.username,

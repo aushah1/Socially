@@ -1,0 +1,136 @@
+body {
+  background: #0a0a0a;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #e4e6eb;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.posts {
+  width: 100%;
+  max-width: 470px; // Instagram feed width
+  display: flex;
+  flex-direction: column; // IMPORTANT: stack posts vertically
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.post {
+  width: 100%;
+  background: #121212;
+  border: 1px solid #262626;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+
+    .post-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .post-profile-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .post-username {
+        font-weight: 600;
+        font-size: 14px;
+        color: #f5f5f5;
+        cursor: pointer;
+      }
+    }
+
+    .post-more {
+      font-size: 18px;
+      color: #b0b3b8;
+      cursor: pointer;
+    }
+  }
+
+  .post-image {
+    width: 100%;
+
+    img {
+      width: 100%;
+      aspect-ratio: 1 / 1; // Instagram square posts
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .post-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px 6px 12px;
+
+    .post-actions-left,
+    .post-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    button {
+      background: transparent;
+      outline: none;
+      border: none;
+      padding: 0;
+      transition: all 0.5s ease-in-out ;
+
+      i {
+        font-size: 24px;
+        color: #e4e6eb;
+        cursor: pointer;
+        transition: 0.2s;
+        width: 100%;
+        height: 100%;
+      }
+
+      &:active {
+        transform: scale(0.7);
+      }
+    }
+
+    .liked {
+      color: red;
+    }
+  }
+
+  .post-likes {
+    padding: 0 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #f5f5f5;
+    margin-bottom: 4px;
+  }
+
+  .post-caption {
+    padding: 0 12px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+
+    .post-username {
+      font-weight: 600;
+      color: #f5f5f5;
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    .post-caption-text {
+      color: #e4e6eb;
+    }
+  }
+}

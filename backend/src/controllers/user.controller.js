@@ -57,7 +57,7 @@ async function unFollowController(req, res) {
   });
 }
 
-async function acceptFollowRequest(req, res) {
+async function acceptFollowRequestController(req, res) {
   const followee = req.user.username;
   const follower = req.params.username;
 
@@ -76,7 +76,7 @@ async function acceptFollowRequest(req, res) {
   });
 }
 
-async function rejectFollowRequest(req, res) {
+async function rejectFollowRequestController(req, res) {
   const followee = req.user.username;
   const follower = req.params.username;
 
@@ -95,7 +95,7 @@ async function rejectFollowRequest(req, res) {
   });
 }
 
-async function getMe(req, res) {
+async function getMeController(req, res) {
   const userId = req.user.id;
 
   const user = await userModel.findById(userId);
