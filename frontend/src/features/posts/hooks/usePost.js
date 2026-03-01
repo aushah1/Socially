@@ -7,10 +7,15 @@ export function UsePost() {
   const { post, setPost, feed, setFeed, loading, setLoading } = context;
 
   const handleGetFeed = async () => {
-    setLoading(true);
-    const data = await getFeed();
-    setFeed(data.posts);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await getFeed();
+      setFeed(data.posts);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
   const handleLikePost = async (postId) => {
     setFeed((prevFeed) =>

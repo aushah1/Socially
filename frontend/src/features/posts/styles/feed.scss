@@ -1,3 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   background: #0a0a0a;
   font-family: Arial, sans-serif;
@@ -7,15 +19,164 @@ body {
 }
 
 main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 10px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr 320px;
+  min-height: 100vh;
+}
+/* LEFT SIDEBAR */
+
+.left-sidebar {
+  border-right: 1px solid #262626;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  transition: all 0.3s ease;
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    img {
+      width: 30px;
+    }
+  }
+  .tabs {
+    height: 84%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-item {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    color: #b0b3b8;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+    svg {
+      height: 24px;
+      width: 24px;
+      transition: fill 0.2s ease;
+    }
+
+    &:hover {
+      background: #1a1a1a;
+      color: white;
+    }
+  }
+
+  .bottom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      h4 {
+        font-weight: 500;
+      }
+      p {
+        font-size: 12px;
+        color: #b0b3b8;
+      }
+    }
+  }
+
+  .active {
+    background: rgba(13, 89, 242, 0.1);
+    color: #0d59f2;
+  }
+}
+
+/* CENTER FEED */
+
+.feed-center {
   display: flex;
   justify-content: center;
 }
 
 .posts {
   width: 100%;
-  max-width: 470px; // Instagram feed width
+  max-width: 470px;
+}
+
+/* RIGHT SIDEBAR */
+
+.right-sidebar {
+  border-left: 1px solid #262626;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+
+  .bio {
+    color: #b0b3b8;
+    p {
+      font-size: small;
+    }
+  }
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+
+.profile-stats {
   display: flex;
-  flex-direction: column; // IMPORTANT: stack posts vertically
+  justify-content: space-around;
+  margin-top: 20px;
+
+  span {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 12px;
+    color: #b0b3b8;
+  }
+}
+
+.posts {
+  width: 100%;
+  max-width: 470px;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 20px 0;
 }
@@ -130,6 +291,73 @@ main {
 
     .post-caption-text {
       color: #e4e6eb;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .right-sidebar {
+    display: none;
+  }
+  .layout {
+    grid-template-columns: 250px 1fr;
+  }
+}
+@media screen and (max-width: 700px) {
+  .layout {
+    grid-template-columns: 1fr 5fr;
+    transition: grid-template-columns 0.3s ease;
+  }
+  .left-sidebar {
+    width: 60px;
+    .logo {
+      h5 {
+        transition: opacity 0.2s ease;
+        display: none;
+      }
+    }
+    .nav-item {
+      h5 {
+        display: none;
+        transition: opacity 0.2s ease;
+      }
+    }
+    .bottom {
+      .info {
+        display: none;
+        transition: opacity 0.2s ease;
+        h4 {
+          font-size: 12px;
+          transition: opacity 0.2s ease;
+        }
+        p {
+          font-size: 8px;
+          transition: opacity 0.2s ease;
+        }
+      }
+      img {
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
+
+  .left-sidebar:hover {
+    width: 180px;
+    .logo {
+      h5 {
+        display: block;
+      }
+    }
+    .nav-item {
+      h5 {
+        display: block;
+      }
+    }
+    .bottom {
+      .info {
+        display: flex;
+      }
     }
   }
 }

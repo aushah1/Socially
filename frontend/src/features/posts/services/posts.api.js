@@ -10,7 +10,7 @@ export async function getFeed() {
     const posts = await api.get("/feed");
     return posts.data;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 }
 
