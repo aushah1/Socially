@@ -1,7 +1,12 @@
 const userModel = require("../models/user.model");
-const crypto = require("crypto");
+const ImageKit = require("@imagekit/nodejs");
+const { toFile } = require("@imagekit/nodejs");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
+const imagekit = new ImageKit({
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+});
 
 async function loginController(req, res) {
   const { email, username, password } = req.body;
@@ -56,7 +61,16 @@ async function loginController(req, res) {
 }
 
 async function registerController(req, res) {
-  const { email, username, password, bio, profileImage } = req.body;
+  const { email, username, fullName, password, bio } = req.body;
+
+  let file = null;
+  if (req.file) {
+    file = await imagekit.files.upload({
+      file: await toFile(Buffer.from(req.file.buffer), "file"),
+      fileName: "profile",
+      folder: "insta-clone/",
+    });
+  }
 
   const isUserAlreadyExists = await userModel.findOne({
     $or: [{ username }, { email }],
@@ -74,10 +88,11 @@ async function registerController(req, res) {
   const hash = await bcrypt.hash(password, 10);
 
   const user = await userModel.create({
+    fullName,
     username,
     email,
     bio,
-    profileImage,
+    profileImage: file ? file.url : null,
     password: hash,
   });
 

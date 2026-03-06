@@ -4,6 +4,7 @@ export const PostContext = createContext();
 
 export function PostProvider({ children }) {
   const [post, setPost] = useState(null);
+  const [user, setUser] = useState(null);
   const [feed, setFeed] = useState(null);
   const [loading, setLoading] = useState(false);
 

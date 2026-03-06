@@ -1,30 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  background: #0a0a0a;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  color: #e4e6eb;
-}
-
-main {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  padding: 10px;
-}
-
 .layout {
   display: grid;
   grid-template-columns: 250px 1fr 320px;
@@ -50,6 +23,8 @@ main {
 
     img {
       width: 30px;
+      object-fit: cover;
+      background-size: cover;
     }
   }
   .tabs {
@@ -94,6 +69,7 @@ main {
       width: 46px;
       height: 46px;
       border-radius: 50%;
+      object-fit: cover;
     }
     .info {
       display: flex;
@@ -136,9 +112,16 @@ main {
   position: sticky;
   top: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
   .bio {
     color: #b0b3b8;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
     p {
       font-size: small;
     }
@@ -147,20 +130,34 @@ main {
 
 .profile-card {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: center;
+  justify-content: center;
+
+  h3 {
+    font-size: 20px;
+    text-transform: capitalize;
+  }
+
+  p {
+    font-size: 14px;
+  }
 }
 
 .profile-image {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  object-fit: cover;
   transition: transform 0.2s ease;
 }
 
 .profile-stats {
   display: flex;
   justify-content: space-around;
-  margin-top: 20px;
+  width: 100%;
 
   span {
     font-weight: bold;

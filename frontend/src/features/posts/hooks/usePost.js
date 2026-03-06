@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PostContext } from "../post.context";
 import { getFeed, likePost } from "../services/posts.api";
 
 export function UsePost() {
   const context = useContext(PostContext);
-  const { post, setPost, feed, setFeed, loading, setLoading } = context;
+  const {  post, setPost, feed, setFeed, loading, setLoading } =
+    context;
 
   const handleGetFeed = async () => {
     try {
@@ -36,5 +37,11 @@ export function UsePost() {
     }
   };
 
-  return { handleGetFeed, handleLikePost, loading, feed, post };
+  return {
+    handleGetFeed,
+    handleLikePost,
+    loading,
+    feed,
+    post,
+  };
 }

@@ -25,6 +25,16 @@ userRouter.get(
   identify.identifyUser,
   userController.rejectFollowRequestController,
 );
+userRouter.get(
+  "/users",
+  identify.identifyUser,
+  userController.getAllUsersController,
+);
+userRouter.get(
+  "/requests",
+  identify.identifyUser,
+  userController.getRequestsController,
+);
 
 userRouter.get("/getme", identify.identifyUser, userController.getMeController);
 

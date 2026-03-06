@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { loginUser, registerUser } from "./services/auth.api";
 import { createContext } from "react";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>

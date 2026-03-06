@@ -10,10 +10,6 @@ const Login = () => {
   const { handleLogin, loading, user } = useAuth();
   const navigate = useNavigate();
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleLogin(username, password);
