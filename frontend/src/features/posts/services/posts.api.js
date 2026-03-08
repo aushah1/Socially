@@ -23,3 +23,20 @@ export async function likePost(postId) {
   }
 }
 
+export async function createPost(caption, file) {
+  try {
+    const formData = new FormData();
+
+    formData.append("caption", caption);
+
+    if (file) {
+      formData.append("image", file);
+    }
+
+    const post = await api.post(`/posts`, formData);
+
+    return post.data;
+  } catch (err) {
+    console.log(err);
+  }
+}

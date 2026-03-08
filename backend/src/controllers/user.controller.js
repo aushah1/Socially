@@ -184,7 +184,6 @@ async function getAllUsersController(req, res) {
   });
 }
 async function getRequestsController(req, res) {
-  console.log(req.user.id);
   const requests = await followModel
     .find({
       followee: req.user.id,

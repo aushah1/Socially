@@ -2,6 +2,7 @@ import LeftSidebar from "../../shared/components/LeftSidebar";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useUser } from "../hooks/useUser";
 import "../styles/user.scss";
+import Loader from "../../shared/components/Loader";
 
 const Following = () => {
   const { user, loading: authLoading } = useAuth();
@@ -14,9 +15,7 @@ const Following = () => {
   );
   if (loading) {
     return (
-      <div className="following">
-        <h2>Loading...</h2>
-      </div>
+        <Loader/>
     );
   }
   return (

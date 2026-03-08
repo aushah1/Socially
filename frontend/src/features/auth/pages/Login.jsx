@@ -2,6 +2,7 @@ import "../styles/form.scss";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
+import Loader from "../../shared/components/Loader";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -9,6 +10,10 @@ const Login = () => {
 
   const { handleLogin, loading, user } = useAuth();
   const navigate = useNavigate();
+
+  if (loading) {
+    return <Loader/>
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

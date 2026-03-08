@@ -3,6 +3,7 @@ import LeftSidebar from "../../shared/components/LeftSidebar";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useUser } from "../hooks/useUser";
 import "../styles/user.scss";
+import Loader from "../../shared/components/Loader";
 const Requests = () => {
   const { user, loading: authLoading } = useAuth();
   const {
@@ -16,9 +17,7 @@ const Requests = () => {
   const loading = authLoading || userLoading;
   if (loading) {
     return (
-      <div className="following">
-        <h2>Loading...</h2>
-      </div>
+        <Loader/>
     );
   }
 

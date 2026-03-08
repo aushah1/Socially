@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "../styles/feed.scss";
 import { UsePost } from "../hooks/usePost";
 import Post from "../components/Post";
 import { useAuth } from "../../auth/hooks/useAuth";
 import LeftSidebar from "../../shared/components/LeftSidebar";
+import Loader from "../../shared/components/Loader";
+import CreatePost from "../components/CreatePost";
 const Feed = () => {
   const navigate = useNavigate();
   const { handleGetFeed, handleLikePost, loading, feed } = UsePost();
@@ -24,11 +26,7 @@ const Feed = () => {
   }, []);
 
   if (loading) {
-    return (
-      <main>
-        <h2>Loading Posts</h2>
-      </main>
-    );
+    return <Loader />;
   }
 
   return (
@@ -39,6 +37,7 @@ const Feed = () => {
 
         {/* CENTER FEED */}
         <section className="feed-center">
+          <CreatePost user={user} />
           <div className="posts">
             {feed &&
               feed.map((post) => (

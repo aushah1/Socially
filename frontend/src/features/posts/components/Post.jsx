@@ -7,7 +7,7 @@ const Post = ({ post, user, onLike }) => {
 
   return (
     <>
-      <div className="post">
+      <div className="post" onDoubleClick={() => handleLike(post._id)}>
         <div className="post-header">
           <div className="post-user">
             <img src={user.profileImage} alt="" className="post-profile-img" />

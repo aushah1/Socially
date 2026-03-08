@@ -7,7 +7,7 @@ const LeftSidebar = ({ user }) => {
       <aside className="left-sidebar">
         <div className="logo">
           <img src="/logo.png" alt="logo" />
-          <h5>BrandName</h5>
+          <h5>Socially</h5>
         </div>
         <div className="tabs">
           <nav>

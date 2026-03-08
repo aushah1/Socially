@@ -3,6 +3,7 @@ import LeftSidebar from "../../shared/components/LeftSidebar";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useUser } from "../hooks/useUser";
 import "../styles/user.scss";
+import Loader from "../../shared/components/Loader";
 
 const Users = () => {
   const { user, loading: authLoading } = useAuth();
@@ -15,12 +16,20 @@ const Users = () => {
 
   const loading = authLoading || userLoading;
 
-  if (loading) {
-    return (
-      <div className="following">
-        <h2>Loading...</h2>
-      </div>
+  function getFollowStatus(username) {
+    const relation = user.following.find(
+      (f) => f.followee.username === username,
     );
+
+    if (!relation) return "follow";
+    if (relation.status === "pending") return "pending";
+    if (relation.status === "accepted") return "unfollow";
+
+    return "follow";
+  }
+
+  if (loading) {
+    return <Loader />;
   }
   return (
     <>
@@ -32,9 +41,7 @@ const Users = () => {
           <div className="users">
             {users?.length > 0 ? (
               users.map((person) => {
-                const isFollowing = user.following.some(
-                  (f) => f.followee.username === person.username,
-                );
+                const status = getFollowStatus(person.username);
                 return (
                   <div key={person._id} className="user-card">
                     <div className="avatar">
@@ -47,12 +54,19 @@ const Users = () => {
 
                     <button
                       className="btn"
-                      onClick={() =>
-                        isFollowing
-                          ? handleUnFollow(person.username)
-                          : handleFollow(person.username)
-                      }>
-                      {isFollowing ? "Unfollow" : "Follow"}
+                      onClick={() => {
+                        if (status === "unfollow") {
+                          handleUnFollow(person.username);
+                        } else if (status === "follow") {
+                          handleFollow(person.username);
+                        }
+                      }}
+                      disabled={status === "pending"}>
+                      {status === "pending"
+                        ? "Pending"
+                        : status === "unfollow"
+                          ? "Unfollow"
+                          : "Follow"}
                     </button>
                   </div>
                 );

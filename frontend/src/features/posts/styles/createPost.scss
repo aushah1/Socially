@@ -1,0 +1,144 @@
+.create-post {
+  padding: 16px;
+  border-bottom: 1px solid #2a2a2a;
+  width: 100%;
+  max-width: 470px;
+
+  .composer-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .trigger-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 25px;
+      border: 1px solid #2a2a2a;
+      background: #1e1e1e;
+      color: #aaa;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        background: #252525;
+      }
+    }
+  }
+}
+
+/* Overlay */
+
+.composer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+/* Modal */
+
+.composer-modal {
+  width: 550px;
+  background: #1c1c1c;
+  border-radius: 12px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Header */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    span {
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 20px;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+/* Textarea */
+
+textarea {
+  width: 100%;
+  height: 200px;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+/* Footer */
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .media-upload {
+    font-size: 22px;
+    cursor: pointer;
+
+    span {
+      font-size: 12px;
+      margin-left: 10px;
+    }
+  }
+
+  .post-btn {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background: #2563eb;
+    }
+  }
+}
