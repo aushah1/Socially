@@ -3,6 +3,7 @@ const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 const likeModel = require("../models/like.model");
 const commentModel = require("../models/comment.model");
+const saveModel = require("../models/save.model");
 
 const imagekit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -95,6 +96,10 @@ async function getFeedController(req, res) {
         user: user.username,
         post: post._id,
       });
+      const isSaved = await saveModel.findOne({
+        user: user.username,
+        post: post._id,
+      });
       const likes = await likeModel.find({
         post: post._id,
       });
@@ -104,6 +109,7 @@ async function getFeedController(req, res) {
         .lean();
 
       post.isLiked = Boolean(isLiked);
+      post.isSaved = Boolean(isSaved);
       post.likes = likes.length;
       post.comments = comments;
       post.commentCount = comments.length;
@@ -114,6 +120,60 @@ async function getFeedController(req, res) {
   res.status(200).json({
     message: "posts fetched successfully.",
     posts,
+  });
+}
+
+async function savePostController(req, res) {
+  const postId = req.params.postId;
+  const user = req.user.username;
+
+  const post = await postModel.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  const existingSave = await saveModel.findOne({ user, post: postId });
+  if (existingSave) {
+    await saveModel.findByIdAndDelete(existingSave._id);
+    return res.status(200).json({ message: "Post unsaved" });
+  }
+
+  const savedPost = await saveModel.create({ user, post: postId });
+  res.status(201).json({ message: "Post saved", savedPost });
+}
+
+async function getSavedPostsController(req, res) {
+  const user = req.user.username;
+  const savedRecords = await saveModel.find({ user }).populate({
+    path: "post",
+    populate: { path: "user", select: "username fullName profileImage" },
+  });
+
+  const savedPosts = [];
+  for (const record of savedRecords) {
+    if (!record.post) {
+      continue;
+    }
+    const postObject = record.post.toObject
+      ? record.post.toObject()
+      : record.post;
+    const likesCount = await likeModel.countDocuments({ post: postObject._id });
+    const commentsCount = await commentModel.countDocuments({
+      post: postObject._id,
+    });
+
+    savedPosts.push({
+      ...postObject,
+      savedAt: record.createdAt,
+      likes: likesCount,
+      commentCount: commentsCount,
+      isSaved: true,
+    });
+  }
+
+  res.status(200).json({
+    message: "Saved posts fetched successfully",
+    savedPosts,
   });
 }
 
@@ -167,5 +227,7 @@ module.exports = {
   likeController,
   getFeedController,
   createCommentController,
+  savePostController,
+  getSavedPostsController,
   getCommentsController,
 };

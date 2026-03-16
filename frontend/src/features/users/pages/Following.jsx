@@ -9,50 +9,60 @@ const Following = () => {
   const { loading: userLoading, handleUnFollow } = useUser();
 
   const loading = authLoading || userLoading;
-
   const acceptedFollowing = user?.following?.filter(
     (f) => f.status === "accepted",
   );
-  if (loading) {
-    return (
-        <Loader/>
-    );
-  }
-  return (
-    <>
-      <main>
-        <LeftSidebar user={user} />
-        <div className="right following">
-          <h2>Following</h2>
-          <p>List of users you are following will appear here.</p>
-          <div className="users">
-            {acceptedFollowing?.length > 0 ? (
-              acceptedFollowing.map((followedUser, idx) => (
-                <div key={idx} className="user-card">
-                  <div className="avatar">
-                    <img src={followedUser.followee.profileImage} alt="user" />
-                  </div>
-                  <div className="user-info">
-                    <h4>{followedUser.followee.fullName}</h4>
-                    <p>@{followedUser.followee.username}</p>
-                  </div>
 
-                  <button
-                    className="btn"
-                    onClick={() =>
-                      handleUnFollow(followedUser.followee.username)
-                    }>
-                    Unfollow
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>You are not following anyone yet.</p>
-            )}
+  if (loading) return <Loader />;
+
+  return (
+    <main className="users">
+      <LeftSidebar user={user} />
+      <div className="page-content">
+        <div className="page-header">
+          <div>
+            <h2 className="page-title">Following</h2>
+            <p className="page-subtitle">
+              {acceptedFollowing?.length > 0
+                ? `You follow ${acceptedFollowing.length} people`
+                : "You're not following anyone yet"}
+            </p>
           </div>
         </div>
-      </main>
-    </>
+
+        <div className="user-list">
+          {acceptedFollowing?.length > 0 ? (
+            acceptedFollowing.map((f) => (
+              <div key={f._id} className="user-card">
+                <img
+                  src={f.followee.profileImage}
+                  alt={f.followee.fullName}
+                  className="user-avatar"
+                />
+                <div className="user-info">
+                  <span className="user-name">{f.followee.fullName}</span>
+                  <span className="user-handle">@{f.followee.username}</span>
+                </div>
+                <button
+                  className="follow-btn follow-btn--unfollow"
+                  onClick={() => handleUnFollow(f.followee.username)}>
+                  <i className="ri-user-unfollow-line" />
+                  <span>Unfollow</span>
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="empty-state">
+              <div className="empty-icon">
+                <i className="ri-user-heart-line" />
+              </div>
+              <h4>Not following anyone</h4>
+              <p>Explore users and start following people you like.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </main>
   );
 };
 

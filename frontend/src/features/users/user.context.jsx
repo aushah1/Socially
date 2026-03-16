@@ -5,7 +5,7 @@ export const UserContext = createContext();
 export function UserProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState(null);
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
 
   return (
     <UserContext.Provider

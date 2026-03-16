@@ -33,9 +33,9 @@ export function useAuth() {
   const handleGetMe = async () => {
     try {
       const res = await getMe();
-      console.log(res.user);
+      // console.log(res.user);
       setUser(res.user);
-      console.log(user);
+      // console.log(user);
     } catch (err) {
       console.log(err.message);
     } finally {

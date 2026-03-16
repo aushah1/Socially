@@ -1,6 +1,12 @@
 import { useContext, useEffect } from "react";
 import { PostContext } from "../post.context";
-import { addComment, createPost, getFeed, likePost } from "../services/posts.api";
+import {
+  addComment,
+  createPost,
+  getFeed,
+  likePost,
+  savePost,
+} from "../services/posts.api";
 
 export function UsePost() {
   const context = useContext(PostContext);
@@ -53,11 +59,25 @@ export function UsePost() {
     }
   };
 
+  const handleSavePost = async (postId) => {
+    try {
+      await savePost(postId);
+      setFeed((prevFeed) =>
+        prevFeed.map((post) =>
+          post._id === postId ? { ...post, isSaved: !post.isSaved } : post,
+        ),
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
     handleGetFeed,
     handleLikePost,
     handleCreatePost,
     handleAddComment,
+    handleSavePost,
     loading,
     feed,
     post,

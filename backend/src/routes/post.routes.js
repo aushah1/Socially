@@ -21,16 +21,25 @@ postRouter.get(
   identify.identifyUser,
   postController.getFeedController,
 );
-
-postRouter.get(
-  "/:postId",
-  identify.identifyUser,
-  postController.getPostDetailsController,
-);
 postRouter.get(
   "/like/:postId",
   identify.identifyUser,
   postController.likeController,
+);
+postRouter.get(
+  "/save/:postId",
+  identify.identifyUser,
+  postController.savePostController,
+);
+postRouter.get(
+  "/saved",
+  identify.identifyUser,
+  postController.getSavedPostsController,
+);
+postRouter.get(
+  "/:postId",
+  identify.identifyUser,
+  postController.getPostDetailsController,
 );
 postRouter.post(
   "/comment/:postId",

@@ -51,6 +51,26 @@ export async function addComment(postId, comment) {
   }
 }
 
+export async function savePost(postId) {
+  try {
+    const response = await api.get(`/posts/save/${postId}`);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getSavedPosts() {
+  try {
+    const response = await api.get(`/posts/saved`);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 export async function getComments(postId) {
   try {
     const response = await api.get(`/posts/comments/${postId}`);

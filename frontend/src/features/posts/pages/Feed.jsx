@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import "../styles/feed.scss";
 import { UsePost } from "../hooks/usePost";
@@ -7,82 +7,121 @@ import { useAuth } from "../../auth/hooks/useAuth";
 import LeftSidebar from "../../shared/components/LeftSidebar";
 import Loader from "../../shared/components/Loader";
 import CreatePost from "../components/CreatePost";
+import { useUser } from "../../users/hooks/useUser";
+
 const Feed = () => {
   const navigate = useNavigate();
-  const { handleGetFeed, handleLikePost, handleAddComment, loading, feed } = UsePost();
+  const {
+    handleGetFeed,
+    handleLikePost,
+    handleAddComment,
+    handleSavePost,
+    loading,
+    feed,
+  } = UsePost();
+  const { users, loading: userLoading } = useUser();
   const { user } = useAuth();
+
   const fetchFeed = async () => {
     try {
       await handleGetFeed();
     } catch (error) {
-      if (error.response?.status === 401) {
-        navigate("/login");
-      }
+      if (error.response?.status === 401) navigate("/login");
     }
   };
+
+  const randomUsers = [...users].sort(() => 0.5 - Math.random()).slice(0, 5);
+
   useEffect(() => {
     fetchFeed();
   }, []);
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (loading || userLoading) return <Loader />;
 
   return (
-    <>
-      <main className="layout">
-        {/* LEFT SIDEBAR */}
-        <LeftSidebar user={user} />
+    <main className="layout">
+      {/* LEFT SIDEBAR */}
+      <LeftSidebar user={user} />
 
-        {/* CENTER FEED */}
-        <section className="feed-center">
-          <CreatePost user={user} />
-          <div className="posts">
-            {feed &&
-              feed.map((post) => (
-                <Post
-                  key={post._id}
-                  post={post}
-                  user={post.user}
-                  onLike={handleLikePost}
-                  onComment={handleAddComment}
-                />
-              ))}
+      {/* CENTER FEED */}
+      <section className="feed-center">
+        <CreatePost user={user} />
+        <div className="posts">
+          {feed?.map((post) => (
+            <Post
+              key={post._id}
+              post={post}
+              user={post.user}
+              onLike={handleLikePost}
+              onComment={handleAddComment}
+              onSave={handleSavePost}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* RIGHT SIDEBAR */}
+      <aside className="right-sidebar">
+        {/* Profile card */}
+        <div className="profile-card">
+          <div className="profile-image-wrap">
+            <div className="profile-ring" />
+            <img
+              src={user?.profileImage || null}
+              alt={user?.fullName}
+              className="profile-image"
+            />
           </div>
-        </section>
 
-        {/* RIGHT SIDEBAR */}
-        <aside className="right-sidebar">
-          <div className="profile-card">
-            <img src={user?.profileImage || null} className="profile-image" />
+          <h3>{user?.fullName || "Name"}</h3>
+          <p className="profile-handle">@{user?.username || "username"}</p>
 
-            <h3>{user?.fullName || "Name"}</h3>
-            <p>{user?.username || "username"}</p>
-
-            <div className="profile-stats">
-              <div>
-                <span>{user?.following?.length || "0"}</span>
-                <p>Following</p>
-              </div>
-
-              <div>
-                <span>{user?.followers?.length || "0"}</span>
-                <p>Followers</p>
-              </div>
-
-              <div>
-                <span>{user?.posts?.length || "0"}</span>
-                <p>Posts</p>
-              </div>
+          <div className="profile-stats">
+            <div className="stat-item">
+              <span>{user?.following?.length ?? 0}</span>
+              <p>Following</p>
+            </div>
+            <div className="stat-item">
+              <span>{user?.followers?.length ?? 0}</span>
+              <p>Followers</p>
+            </div>
+            <div className="stat-item">
+              <span>{user?.posts?.length ?? 0}</span>
+              <p>Posts</p>
             </div>
           </div>
-          <div className="bio">
+        </div>
+
+        {/* Bio */}
+        {user?.bio && (
+          <div className="bio-card">
             <h5>Bio</h5>
-            <p>{user?.bio || "bio"}</p>
+            <p>{user.bio}</p>
           </div>
-        </aside>
-      </main>
-    </>
+        )}
+
+        {/* Suggested users */}
+        <div className="suggested-card">
+          <div className="suggested-header">
+            <h5>Suggested for you</h5>
+            <span>See all</span>
+          </div>
+
+          {randomUsers.map((user) => (
+            <div className="suggested-user" key={user._id}>
+              <div className="suggested-user-info">
+                <img src={user.profileImage} alt="user" />
+                <div>
+                  <p className="suggested-name">User {user.fullName}</p>
+                  <p className="suggested-handle">@user_{user.username}</p>
+                </div>
+              </div>
+              <button className="follow-btn">Follow</button>
+            </div>
+          ))}
+        </div>
+      </aside>
+    </main>
   );
 };
 

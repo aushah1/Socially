@@ -2,113 +2,95 @@ import React from "react";
 import LeftSidebar from "../../shared/components/LeftSidebar";
 import { useAuth } from "../../auth/hooks/useAuth";
 import "../styles/user.scss";
+import Loader from "../../shared/components/Loader";
 
 const Profile = () => {
   const { user, loading } = useAuth();
   const posts = user?.posts || [];
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <Loader />;
 
   return (
-    <main>
+    <main className="users">
       <LeftSidebar user={user} />
-      <div className="right profile-page" style={{ padding: "2rem" }}>
-        <div
-          className="profile-card"
-          style={{
-            width: "100%",
-            marginBottom: "1rem",
-            background: "#0f0f0f",
-            padding: "1rem",
-            borderRadius: "12px",
-            color: "#fff",
-          }}>
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+      <div className="page-content page-content--wide">
+        {/* Profile hero */}
+        <div className="profile-hero">
+          <div className="profile-hero-avatar-wrap">
+            <div className="profile-hero-ring" />
             <img
               src={user?.profileImage || "https://via.placeholder.com/96"}
               alt="profile"
-              style={{
-                width: "96px",
-                height: "96px",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
+              className="profile-hero-avatar"
             />
-            <div>
-              <h2 style={{ margin: 0 }}>{user?.fullName || "Your Name"}</h2>
-              <p style={{ margin: "4px 0", color: "#aaa" }}>
-                @{user?.username || "username"}
-              </p>
-              <p style={{ margin: 0, color: "#ccc" }}>
-                {user?.bio || "No bio yet"}
-              </p>
+          </div>
+          <div className="profile-hero-info">
+            <h2 className="profile-hero-name">
+              {user?.fullName || "Your Name"}
+            </h2>
+            <p className="profile-hero-handle">
+              @{user?.username || "username"}
+            </p>
+            {user?.bio && <p className="profile-hero-bio">{user.bio}</p>}
+          </div>
+          <div className="profile-hero-stats">
+            <div className="profile-stat">
+              <span>{posts.length}</span>
+              <p>Posts</p>
+            </div>
+            <div className="profile-stat-divider" />
+            <div className="profile-stat">
+              <span>{user?.followers?.length ?? 0}</span>
+              <p>Followers</p>
+            </div>
+            <div className="profile-stat-divider" />
+            <div className="profile-stat">
+              <span>{user?.following?.length ?? 0}</span>
+              <p>Following</p>
             </div>
           </div>
-
-          <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
-            <div>
-              <strong>{posts.length}</strong>
-              <p style={{ margin: 0, color: "#aaa" }}>Posts</p>
-            </div>
-            <div>
-              <strong>{user?.followers?.length || 0}</strong>
-              <p style={{ margin: 0, color: "#aaa" }}>Followers</p>
-            </div>
-            <div>
-              <strong>{user?.following?.length || 0}</strong>
-              <p style={{ margin: 0, color: "#aaa" }}>Following</p>
-            </div>
-          </div>
+          <button className="edit-profile-btn">
+            <i className="ri-edit-line" />
+            <span>Edit Profile</span>
+          </button>
         </div>
 
-        <div className="users" style={{ width: "100%" }}>
-          <h3>Your Posts</h3>
+        {/* Posts section */}
+        <div className="profile-posts-section">
+          <div className="section-heading">
+            <i className="ri-grid-line" />
+            <span>Your Posts</span>
+          </div>
+
           {posts.length > 0 ? (
-            posts.map((post) => (
-              <div
-                key={post._id}
-                className="user-card"
-                style={{
-                  width: "100%",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  background: "#0f0f0f",
-                  padding: "12px",
-                  borderRadius: "10px",
-                  marginBottom: "0.5rem",
-                }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.8rem",
-                  }}>
+            <div className="profile-posts-grid">
+              {posts.map((post) => (
+                <div key={post._id} className="profile-post-card">
                   <img
                     src={post.imageUrl}
                     alt="post"
-                    style={{
-                      width: "72px",
-                      height: "72px",
-                      borderRadius: "10px",
-                      objectFit: "cover",
-                    }}
+                    className="profile-post-img"
                   />
-                  <div>
-                    <p style={{ margin: 0, fontWeight: 700, color: "#fff" }}>
-                      {post.caption || "No caption"}
-                    </p>
-                    <p style={{ margin: "2px 0 0", color: "#ccc" }}>
-                      {post.likes || 0} likes · {post.commentCount || 0}{" "}
-                      comments
-                    </p>
+                  <div className="profile-post-overlay">
+                    <span>
+                      <i className="ri-heart-fill" />{" "}
+                      {(post.likes || 0).toLocaleString()}
+                    </span>
+                    <span>
+                      <i className="ri-chat-1-fill" /> {post.commentCount || 0}
+                    </span>
                   </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
-            <p>No posts yet.</p>
+            <div className="empty-state">
+              <div className="empty-icon">
+                <i className="ri-camera-line" />
+              </div>
+              <h4>No posts yet</h4>
+              <p>When you share something, it'll appear here.</p>
+            </div>
           )}
         </div>
       </div>
