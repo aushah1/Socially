@@ -14,13 +14,13 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  if (loading) {
-    return <Loader />;
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleRegister(username, email, password);
+
+    if (loading) {
+      return <Loader />;
+    }
     navigate("/");
   };
   return (

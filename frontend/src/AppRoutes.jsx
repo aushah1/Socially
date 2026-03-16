@@ -8,6 +8,7 @@ import Followers from "./features/users/pages/Followers";
 import Following from "./features/users/pages/Following";
 import Requests from "./features/users/pages/Requests";
 import ProtectedRoute from "./features/shared/components/ProtectedRoute";
+import Profile from "./features/users/pages/Profile";
 
 const AppRoutes = () => {
   return (
@@ -57,6 +58,14 @@ const AppRoutes = () => {
             <ProtectedRoute>
               {" "}
               <Requests />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

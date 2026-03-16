@@ -1,6 +1,8 @@
 const followModel = require("../models/follow.model");
 const postModel = require("../models/post.model");
 const userModel = require("../models/user.model");
+const likeModel = require("../models/like.model");
+const commentModel = require("../models/comment.model");
 
 async function followController(req, res) {
   const followerId = req.user.id;
@@ -153,13 +155,27 @@ async function getMeController(req, res) {
     postModel.find({ user: user._id }),
 
     followModel
-      .find({ followee: user._id})
+      .find({ followee: user._id })
       .populate("follower", "username fullName profileImage"),
 
     followModel
-      .find({ follower: user._id})
+      .find({ follower: user._id })
       .populate("followee", "username fullName profileImage"),
   ]);
+
+  const postsWithCounts = await Promise.all(
+    posts.map(async (post) => {
+      const likesCount = await likeModel.countDocuments({ post: post._id });
+      const commentsCount = await commentModel.countDocuments({
+        post: post._id,
+      });
+      return {
+        ...post.toObject(),
+        likes: likesCount,
+        commentCount: commentsCount,
+      };
+    }),
+  );
 
   res.status(200).json({
     message: "User Fetched Successfully",
@@ -169,7 +185,7 @@ async function getMeController(req, res) {
       email: user.email,
       bio: user.bio,
       profileImage: user.profileImage,
-      posts,
+      posts: postsWithCounts,
       followers,
       following,
     },

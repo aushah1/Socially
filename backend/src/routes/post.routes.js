@@ -32,5 +32,15 @@ postRouter.get(
   identify.identifyUser,
   postController.likeController,
 );
+postRouter.post(
+  "/comment/:postId",
+  identify.identifyUser,
+  postController.createCommentController,
+);
+postRouter.get(
+  "/comments/:postId",
+  identify.identifyUser,
+  postController.getCommentsController,
+);
 
 module.exports = postRouter;

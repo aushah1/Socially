@@ -48,6 +48,14 @@ const LeftSidebar = ({ user }) => {
             </NavLink>
 
             <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "nav-item active" : "nav-item"
+              }>
+              <i className="ri-profile-line"></i>
+              <h5>Profile</h5>
+            </NavLink>
+            <NavLink
               to="/users"
               className={({ isActive }) =>
                 isActive ? "nav-item active" : "nav-item"

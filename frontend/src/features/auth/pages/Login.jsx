@@ -11,14 +11,12 @@ const Login = () => {
   const { handleLogin, loading, user } = useAuth();
   const navigate = useNavigate();
 
-  if (loading) {
-    return <Loader/>
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleLogin(username, password);
-
+    if (loading) {
+      return <Loader />;
+    }
     console.log("User Logged in");
     navigate("/");
   };

@@ -2,6 +2,7 @@ const postModel = require("../models/post.model");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 const likeModel = require("../models/like.model");
+const commentModel = require("../models/comment.model");
 
 const imagekit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -97,8 +98,15 @@ async function getFeedController(req, res) {
       const likes = await likeModel.find({
         post: post._id,
       });
+      const comments = await commentModel
+        .find({ post: post._id })
+        .sort({ createdAt: -1 })
+        .lean();
+
       post.isLiked = Boolean(isLiked);
       post.likes = likes.length;
+      post.comments = comments;
+      post.commentCount = comments.length;
       return post;
     }),
   );
@@ -109,10 +117,55 @@ async function getFeedController(req, res) {
   });
 }
 
+async function createCommentController(req, res) {
+  const { postId } = req.params;
+  const { comment } = req.body;
+
+  if (!comment || comment.trim().length === 0) {
+    return res.status(400).json({ message: "Comment text is required" });
+  }
+
+  const post = await postModel.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  const newComment = await commentModel.create({
+    user: req.user.username,
+    post: postId,
+    comment: comment.trim(),
+  });
+
+  res.status(201).json({
+    message: "Comment added successfully",
+    comment: newComment,
+  });
+}
+
+async function getCommentsController(req, res) {
+  const { postId } = req.params;
+
+  const post = await postModel.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  const comments = await commentModel
+    .find({ post: postId })
+    .sort({ createdAt: -1 });
+
+  res.status(200).json({
+    message: "Comments fetched successfully",
+    comments,
+  });
+}
+
 module.exports = {
   createPostController,
   getPostsController,
   getPostDetailsController,
   likeController,
   getFeedController,
+  createCommentController,
+  getCommentsController,
 };

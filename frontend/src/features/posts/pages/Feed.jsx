@@ -9,19 +9,18 @@ import Loader from "../../shared/components/Loader";
 import CreatePost from "../components/CreatePost";
 const Feed = () => {
   const navigate = useNavigate();
-  const { handleGetFeed, handleLikePost, loading, feed } = UsePost();
+  const { handleGetFeed, handleLikePost, handleAddComment, loading, feed } = UsePost();
   const { user } = useAuth();
-  useEffect(() => {
-    const fetchFeed = async () => {
-      try {
-        await handleGetFeed();
-      } catch (error) {
-        if (error.response?.status === 401) {
-          navigate("/login");
-        }
+  const fetchFeed = async () => {
+    try {
+      await handleGetFeed();
+    } catch (error) {
+      if (error.response?.status === 401) {
+        navigate("/login");
       }
-    };
-
+    }
+  };
+  useEffect(() => {
     fetchFeed();
   }, []);
 
@@ -46,6 +45,7 @@ const Feed = () => {
                   post={post}
                   user={post.user}
                   onLike={handleLikePost}
+                  onComment={handleAddComment}
                 />
               ))}
           </div>
@@ -87,9 +87,3 @@ const Feed = () => {
 };
 
 export default Feed;
-
-//<i className="ri-user-line"></i> users
-//<i className="ri-team-line"></i> following
-// <i className="ri-group-line"></i> followers
-//<i className="ri-notification-2-line"></i> requests
-// <i className="ri-home-5-fill"></i>  dashboard

@@ -32,15 +32,20 @@ export function useAuth() {
 
   const handleGetMe = async () => {
     try {
-      setLoading(true);
       const res = await getMe();
+      console.log(res.user);
       setUser(res.user);
+      console.log(user);
     } catch (err) {
       console.log(err.message);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    handleGetMe;
+  }, []);
 
   return {
     user,

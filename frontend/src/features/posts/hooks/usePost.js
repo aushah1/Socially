@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { PostContext } from "../post.context";
-import { createPost, getFeed, likePost } from "../services/posts.api";
+import { addComment, createPost, getFeed, likePost } from "../services/posts.api";
 
 export function UsePost() {
   const context = useContext(PostContext);
@@ -44,10 +44,20 @@ export function UsePost() {
     }
   };
 
+  const handleAddComment = async (postId, comment) => {
+    try {
+      await addComment(postId, comment);
+      await handleGetFeed();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
     handleGetFeed,
     handleLikePost,
     handleCreatePost,
+    handleAddComment,
     loading,
     feed,
     post,

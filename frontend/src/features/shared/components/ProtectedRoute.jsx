@@ -5,10 +5,10 @@ import Loader from "./Loader";
 
 export default function ProtectedRoute({ children }) {
   const { user, loading, handleGetMe } = useAuth();
-
   useEffect(() => {
     handleGetMe();
   }, []);
+
 
   if (loading) {
     return <Loader />;

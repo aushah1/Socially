@@ -40,3 +40,23 @@ export async function createPost(caption, file) {
     console.log(err);
   }
 }
+
+export async function addComment(postId, comment) {
+  try {
+    const response = await api.post(`/posts/comment/${postId}`, { comment });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function getComments(postId) {
+  try {
+    const response = await api.get(`/posts/comments/${postId}`);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
